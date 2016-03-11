@@ -51,3 +51,50 @@ MPI_Recv(
 -6th arg specifies the communicator
 -last arg (for MPI_Recv ONLY) provides info about the received message
 
+Elementary MPI datatypes
+
+MPI datatype		C equivalent
+MPI_SHORT		short int
+MPI_INT			int
+MPI_LONG		long int
+MPI_LONG_LONG		long long int
+MPI_UNSIGNED_CHAR	unsigned char
+MPI_UNSIGNED_SHORT	unsigned short int
+MPI_UNSIGNED		unsigned int
+MPI_UNSIGNED_LONG	unsigned long int
+MPI_UNSIGNED_LONG_LONG	unsigned long long int
+MPI_FLOAT		float
+MPI_DOUBLE		double
+MPI_LONG_DOUBLE		long double
+MPI_BYTE		char
+
+MPI send/recv program
+————————————————————————————————
+// Find out rank, size
+int world_rank;
+MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+int world_size;
+MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+int number;
+if (world_rank == 0) {
+    number = -1;
+    MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+} else if (world_rank == 1) {
+    MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+    printf("Process 1 received number %d from process 0\n",
+           number);
+}
+//output: Process 1 received number -1 from process 0
+—————————————————————————————
+
+-MPI_Comm_rank is used to determine the rank of the process
+-MPI_Comm_size is used to determine the world size 
+-then the process zero initializes a number to the value of -1 and send this value to process one 
+
+MPI Ping Pong Program
+
+
+
+
