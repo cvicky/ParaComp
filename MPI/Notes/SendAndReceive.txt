@@ -1,1 +1,53 @@
 
+http://mpitutorial.com/tutorials/mpi-send-and-receive/
+
+MPI Send and Receive
+
+-almost every single function in MPI can be implemented with basic send and receive calls
+
+Overview:
+-blocking and receiving functions
+-other basic concepts associated with transmitting data using MPI
+
+Sending and Receiving
+-first, process A decides a message needs to be sent to process B
+-process A then packs all of its necessary data into a buffer for process B
+	-buffers are often referred to as envelopes (messages are packed into them)
+-after data is packed into buffer, the communication device (network) is responsible for routing the message to proper location
+	-location of message is defined by process’s rank
+
+-even though message is routed to B, process B still needs to acknowledge that it wants to receive A’s data in the first place (YEA, CONSENT)
+-once B acknowledges that it wants to receive A’s data, the data has been transmitted 
+	-data may even go back and forth
+
+-sometimes A might have to send different types of messages to B
+-instead of B having to differentiate all these messages, MPI allows sender and receivers to specify message IDs (aka tags)
+-when process B requests a message with a certain tag number, messages with different tags will be buffered by the network until B is ready for them
+
+Functions:
+
+MPI_Send(
+    void* data,
+    int count,
+    MPI_Datatype datatype,
+    int destination,
+    int tag,
+    MPI_Comm communicator)
+
+MPI_Recv(
+    void* data,
+    int count,
+    MPI_Datatype datatype,
+    int source,
+    int tag,
+    MPI_Comm communicator,
+    MPI_Status* status)
+
+-first arg is the data buffer
+-2nd and 3rd are the count and type of elements that reside in the butter
+-MPI_Send will send the exact count of elements
+-MPI_Recv will receive AT MOST the count of elements
+-4th and 5th args specify the rank of the sending/receiving process and the tag of the message
+-6th arg specifies the communicator
+-last arg (for MPI_Recv ONLY) provides info about the received message
+
