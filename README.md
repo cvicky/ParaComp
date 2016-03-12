@@ -1,1 +1,1 @@
-# ParallelComputing
+# ParaComp
